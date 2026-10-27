@@ -100,6 +100,7 @@
     .slider img { display: block; width: 100%; height: 340px; object-fit: contain; }
     .slnav { position: absolute; top: 50%; transform: translateY(-50%); border: 0; border-radius: 8px; color: #fff; background: rgba(0,0,0,.5); font-size: 1.4rem; padding: .4rem .8rem; cursor: pointer; }
     .prev { left: .5rem; } .next { right: .5rem; }
+    .pause { top: .5rem; right: .5rem; transform: none; font-size: 1rem; }
     .info { display: flex; justify-content: space-between; padding: .5rem .8rem; background: #222; color: #ddd; font-size: .85rem; }
     .info a { color: #ffcc80; }
     .thumbs { display: flex; gap: .4rem; overflow-x: auto; padding: .5rem 0 0; }
@@ -150,6 +151,7 @@
         <img id="main" alt="">
         <button type="button" class="slnav prev" id="prev">‹</button>
         <button type="button" class="slnav next" id="next">›</button>
+        <button type="button" class="slnav pause" id="pause" title="일시정지/재생">⏸</button>
         <div class="info"><span id="count"></span><span id="credit"></span></div>
       </div>
       <div class="thumbs" id="thumbs"></div>
@@ -214,6 +216,7 @@
         images = data.hits;
         if (!images.length) {
           $('msg').textContent = '검색 결과가 없습니다.';
+          stopAuto();
           $('slider').style.display = 'none';
           $('thumbs').innerHTML = '';
           return;
@@ -222,6 +225,9 @@
         idx = 0;
         buildThumbs();
         show();
+        paused = false;
+        $('pause').textContent = '⏸';
+        startAuto();
       } catch (err) {
         $('msg').textContent = err.message;
       } finally {
@@ -234,7 +240,7 @@
       images.forEach((im, i) => {
         const t = document.createElement('img');
         t.src = im.previewURL; t.alt = im.tags;
-        t.addEventListener('click', () => { idx = i; show(); });
+        t.addEventListener('click', () => { idx = i; show(); startAuto(); });
         $('thumbs').appendChild(t);
       });
     }
@@ -253,16 +259,29 @@
     }
 
     const move = d => { if (images.length) { idx = (idx + d + images.length) % images.length; show(); } };
-    $('prev').addEventListener('click', () => move(-1));
-    $('next').addEventListener('click', () => move(1));
+
+    // 검색 후 0.5초마다 다음 이미지로 자동 슬라이드
+    let timer = null, paused = false;
+    function startAuto() {
+      stopAuto();
+      if (!paused && images.length > 1) timer = setInterval(() => move(1), 500);
+    }
+    function stopAuto() { clearInterval(timer); timer = null; }
+    function togglePause() {
+      paused = !paused;
+      $('pause').textContent = paused ? '▶' : '⏸';
+      paused ? stopAuto() : startAuto();
+    }
+    $('pause').addEventListener('click', togglePause);
+
+    $('prev').addEventListener('click', () => { move(-1); startAuto(); });
+    $('next').addEventListener('click', () => { move(1); startAuto(); });
     $('form').addEventListener('submit', e => { e.preventDefault(); search($('q').value.trim()); });
     document.addEventListener('keydown', e => {
       if (e.target.tagName === 'INPUT') return;
       if (e.key === 'ArrowLeft') move(-1);
       if (e.key === 'ArrowRight') move(1);
     });
-
-    search($('q').value.trim());
   </script>
 </body>
 </html>
