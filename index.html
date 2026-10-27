@@ -3,39 +3,99 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>카운터</title>
+  <title>화면 부품 지도</title>
   <style>
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-      font-family: sans-serif;
-    }
-    #count {
-      font-size: 4rem;
-      margin-bottom: 1rem;
-    }
-    button {
-      font-size: 1.25rem;
-      padding: 0.5rem 1.5rem;
-      cursor: pointer;
-    }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 1.5rem 1rem; background: #eceff1; font-family: sans-serif; color: #333; }
+    .wrap { max-width: 640px; margin: 0 auto; }
+    h1 { font-size: 1.3rem; margin: 0 0 .25rem; }
+    .sub { margin: 0 0 1.5rem; color: #666; font-size: .9rem; }
+    .row { display: flex; align-items: flex-start; gap: .75rem; margin-bottom: 1rem; }
+    .tags { flex: 0 0 92px; display: flex; flex-direction: column; gap: .35rem; padding-top: .25rem; }
+    .tag { display: block; font-size: .75rem; font-weight: bold; color: #fff; padding: .2rem .5rem; border-radius: 6px; text-align: center; }
+    .t-header { background: #e65100; }
+    .t-card { background: #6a1b9a; }
+    .t-tab { background: #1565c0; }
+    .t-list { background: #2e7d32; }
+    .t-footer { background: #455a64; }
+    .box { flex: 1; min-width: 0; }
+    /* index.html과 같은 모양의 복제본 */
+    .card { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,.12); outline: 2px dashed #6a1b9a; outline-offset: 3px; }
+    header.card { padding: 1.25rem 1rem; text-align: center; color: #fff; background: linear-gradient(135deg,#ff9800,#f57c00); }
+    header h1 { margin: 0; font-size: 1.3rem; }
+    header p { margin: .25rem 0 0; font-size: .85rem; opacity: .9; }
+    nav.card { display: flex; }
+    nav a { flex: 1; padding: .8rem 0; text-align: center; color: #8d6e63; font-size: .9rem; }
+    nav a.active { color: #e65100; font-weight: bold; border-bottom: 3px solid #f57c00; }
+    main.card { padding: 1rem 1.25rem; }
+    main h2 { margin: 0 0 .5rem; font-size: 1.05rem; }
+    main h3 { margin: .75rem 0 .3rem; font-size: .95rem; color: #e65100; }
+    main ul { margin: 0; padding: 0; list-style: none; outline: 2px dashed #2e7d32; outline-offset: 3px; }
+    main li { padding: .4rem 0; border-bottom: 1px solid #f0f0f0; font-size: .88rem; }
+    main li:last-child { border-bottom: 0; }
+    .more { color: #999; font-size: .8rem; margin: .5rem 0 0; }
+    footer.card { padding: .9rem; text-align: center; font-size: .8rem; color: #8d6e63; }
+    nav.card a { outline: 2px dashed #1565c0; outline-offset: -4px; }
+    header.card { outline-color: #e65100; }
+    footer.card { outline-color: #455a64; }
+    h2.res { font-size: 1.05rem; margin: 2rem 0 .5rem; }
+    table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; font-size: .9rem; }
+    td, th { padding: .6rem .9rem; border-bottom: 1px solid #eee; text-align: left; }
+    .yes { color: #2e7d32; font-weight: bold; }
+    .no { color: #999; }
   </style>
 </head>
 <body>
-  <div id="count">0</div>
-  <button id="btn">+2 </button>
+<div class="wrap">
+  <h1>🗺️ 화면 부품 지도</h1>
+  <p class="sub">index.html의 화면 부품 옆에 이름표를 붙인 미리보기입니다. (index.html은 수정하지 않았습니다)</p>
 
-  <script>
-    let count = 0;
-    const countEl = document.getElementById('count');
-    document.getElementById('btn').addEventListener('click', () => {
-      count += 2;
-      countEl.textContent = count;
-    });
-  </script>
+  <div class="row">
+    <div class="tags"><span class="tag t-header">헤더</span><span class="tag t-card">카드</span></div>
+    <div class="box">
+      <header class="card"><h1>🍊 내 취향 카드</h1><p>현지훈의 제주 취향</p></header>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="tags"><span class="tag t-tab">탭 (메뉴)</span><span class="tag t-card">카드</span></div>
+    <div class="box">
+      <nav class="card"><a class="active">취향</a><a>음식</a><a>여행</a></nav>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="tags"><span class="tag t-card">카드 (바디)</span><span class="tag t-list">목록</span></div>
+    <div class="box">
+      <main class="card">
+        <h2>🌊 제주대학교 홍보 문구</h2>
+        <h3>🌊 제주대학교를 소개합니다</h3>
+        <ul>
+          <li>🌴 바다와 한라산 사이, 꿈이 자라는 곳 제주대학교</li>
+          <li>🏛️ 제주를 대표하는 국립대학교입니다.</li>
+          <li>🌏 지역에 뿌리를 두고 세계로 뻗어 나갑니다.</li>
+        </ul>
+        <p class="more">… 이하 10개 묶음 · 100줄 (생략)</p>
+      </main>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="tags"><span class="tag t-footer">푸터</span><span class="tag t-card">카드</span></div>
+    <div class="box">
+      <footer class="card">© 2026 현지훈 · 제주 특산물 에이전트</footer>
+    </div>
+  </div>
+
+  <h2 class="res">이름표 찾기 결과</h2>
+  <table>
+    <tr><td>헤더</td><td class="yes">있음 — &lt;header&gt; 1개</td></tr>
+    <tr><td>카드</td><td class="yes">있음 — .card 4개 (헤더·메뉴·바디·푸터)</td></tr>
+    <tr><td>탭</td><td class="yes">있음 — 상단 메뉴 3개 (취향·음식·여행, 누르면 바뀌지는 않음)</td></tr>
+    <tr><td>목록</td><td class="yes">있음 — &lt;ul&gt; 10개, 항목 100줄</td></tr>
+    <tr><td>버튼</td><td class="no">없음</td></tr>
+    <tr><td>입력창</td><td class="no">없음</td></tr>
+  </table>
+</div>
 </body>
 </html>
