@@ -3,99 +3,170 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>화면 부품 지도</title>
+  <title>제주 특산물 홍보관</title>
   <style>
     * { box-sizing: border-box; }
-    body { margin: 0; padding: 1.5rem 1rem; background: #eceff1; font-family: sans-serif; color: #333; }
-    .wrap { max-width: 640px; margin: 0 auto; }
-    h1 { font-size: 1.3rem; margin: 0 0 .25rem; }
-    .sub { margin: 0 0 1.5rem; color: #666; font-size: .9rem; }
-    .row { display: flex; align-items: flex-start; gap: .75rem; margin-bottom: 1rem; }
-    .tags { flex: 0 0 92px; display: flex; flex-direction: column; gap: .35rem; padding-top: .25rem; }
-    .tag { display: block; font-size: .75rem; font-weight: bold; color: #fff; padding: .2rem .5rem; border-radius: 6px; text-align: center; }
-    .t-header { background: #e65100; }
-    .t-card { background: #6a1b9a; }
-    .t-tab { background: #1565c0; }
-    .t-list { background: #2e7d32; }
-    .t-footer { background: #455a64; }
-    .box { flex: 1; min-width: 0; }
-    /* index.html과 같은 모양의 복제본 */
-    .card { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 14px rgba(0,0,0,.12); outline: 2px dashed #6a1b9a; outline-offset: 3px; }
-    header.card { padding: 1.25rem 1rem; text-align: center; color: #fff; background: linear-gradient(135deg,#ff9800,#f57c00); }
-    header h1 { margin: 0; font-size: 1.3rem; }
-    header p { margin: .25rem 0 0; font-size: .85rem; opacity: .9; }
-    nav.card { display: flex; }
-    nav a { flex: 1; padding: .8rem 0; text-align: center; color: #8d6e63; font-size: .9rem; }
-    nav a.active { color: #e65100; font-weight: bold; border-bottom: 3px solid #f57c00; }
-    main.card { padding: 1rem 1.25rem; }
-    main h2 { margin: 0 0 .5rem; font-size: 1.05rem; }
-    main h3 { margin: .75rem 0 .3rem; font-size: .95rem; color: #e65100; }
-    main ul { margin: 0; padding: 0; list-style: none; outline: 2px dashed #2e7d32; outline-offset: 3px; }
-    main li { padding: .4rem 0; border-bottom: 1px solid #f0f0f0; font-size: .88rem; }
-    main li:last-child { border-bottom: 0; }
-    .more { color: #999; font-size: .8rem; margin: .5rem 0 0; }
-    footer.card { padding: .9rem; text-align: center; font-size: .8rem; color: #8d6e63; }
-    nav.card a { outline: 2px dashed #1565c0; outline-offset: -4px; }
-    header.card { outline-color: #e65100; }
-    footer.card { outline-color: #455a64; }
-    h2.res { font-size: 1.05rem; margin: 2rem 0 .5rem; }
-    table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; font-size: .9rem; }
-    td, th { padding: .6rem .9rem; border-bottom: 1px solid #eee; text-align: left; }
-    .yes { color: #2e7d32; font-weight: bold; }
-    .no { color: #999; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      color: #333;
+      background: #fff8ee;
+      line-height: 1.6;
+    }
+    .layout {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 1rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      grid-template-areas:
+        "header  header"
+        "nav     nav"
+        "section aside"
+        "article aside"
+        "footer  footer";
+      gap: 1rem;
+    }
+    header { grid-area: header; }
+    nav { grid-area: nav; }
+    section { grid-area: section; }
+    article { grid-area: article; }
+    aside { grid-area: aside; }
+    footer { grid-area: footer; }
+
+    header, nav, section, article, aside, footer {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, .1);
+    }
+    header {
+      padding: 2rem 1rem;
+      text-align: center;
+      color: #fff;
+      background: linear-gradient(135deg, #ff9800, #ef6c00);
+    }
+    header h1 { margin: 0; font-size: 2rem; }
+    header p { margin: .4rem 0 0; opacity: .95; }
+
+    nav { display: flex; flex-wrap: wrap; overflow: hidden; }
+    nav a {
+      flex: 1 1 0;
+      padding: .9rem .5rem;
+      text-align: center;
+      text-decoration: none;
+      color: #6d4c41;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+    nav a:hover { background: #ffe0b2; color: #e65100; }
+
+    section, article, aside { padding: 1.25rem; }
+    h2 { margin: 0 0 .75rem; font-size: 1.3rem; color: #e65100; }
+    h3 { margin: 0 0 .25rem; font-size: 1.05rem; }
+    p { margin: 0 0 .5rem; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: .75rem; }
+    .item { padding: .9rem; border: 1px solid #ffe0b2; border-radius: 10px; background: #fffaf3; }
+    .item .emoji { font-size: 2rem; }
+    .item p { font-size: .9rem; color: #555; margin: 0; }
+
+    .recipe { list-style: none; margin: 0; padding: 0; }
+    .recipe li { padding: .55rem 0; border-bottom: 1px solid #f3e5d0; }
+    .recipe li:last-child { border-bottom: 0; }
+    .recipe b { color: #e65100; }
+
+    aside h2 { font-size: 1.1rem; }
+    aside ul { margin: 0 0 1rem; padding-left: 1.1rem; }
+    aside li { font-size: .92rem; margin-bottom: .3rem; }
+    .badge {
+      display: inline-block;
+      padding: .15rem .6rem;
+      margin: 0 .25rem .35rem 0;
+      border-radius: 999px;
+      background: #fff3e0;
+      color: #e65100;
+      font-size: .8rem;
+      font-weight: bold;
+    }
+    footer { padding: 1rem; text-align: center; font-size: .85rem; color: #8d6e63; }
+
+    @media (max-width: 720px) {
+      .layout {
+        grid-template-columns: 1fr;
+        grid-template-areas: "header" "nav" "section" "article" "aside" "footer";
+      }
+      nav a { flex: 1 1 45%; }
+    }
   </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>🗺️ 화면 부품 지도</h1>
-  <p class="sub">index.html의 화면 부품 옆에 이름표를 붙인 미리보기입니다. (index.html은 수정하지 않았습니다)</p>
+  <div class="layout">
+    <header>
+      <h1>🍊 제주 특산물 홍보관 🌴</h1>
+      <p>바다와 한라산이 키운 제주의 맛을 만나보세요</p>
+    </header>
 
-  <div class="row">
-    <div class="tags"><span class="tag t-header">헤더</span><span class="tag t-card">카드</span></div>
-    <div class="box">
-      <header class="card"><h1>🍊 내 취향 카드</h1><p>현지훈의 제주 취향</p></header>
-    </div>
+    <nav>
+      <a href="#citrus">🍊 감귤</a>
+      <a href="#sea">🐟 해산물</a>
+      <a href="#pork">🐷 흑돼지</a>
+      <a href="#food">🍜 향토 음식</a>
+      <a href="#tip">🧳 여행 팁</a>
+    </nav>
+
+    <section id="citrus">
+      <h2>🍊 제주 감귤 이야기</h2>
+      <p>온화한 기후와 화산토에서 자란 제주 감귤은 가을부터 겨울까지 수확하는 제주의 대표 과일입니다. 새콤달콤한 맛과 향으로 사랑받습니다.</p>
+      <div class="grid">
+        <div class="item"><div class="emoji">🍊</div><h3>노지 감귤</h3><p>햇살을 듬뿍 받고 자라 맛이 진합니다.</p></div>
+        <div class="item"><div class="emoji">🍋</div><h3>한라봉</h3><p>꼭지가 볼록한 큰 감귤, 선물용으로 인기입니다.</p></div>
+        <div class="item"><div class="emoji">🌸</div><h3>천혜향</h3><p>향이 진하고 달콤한 고급 감귤입니다.</p></div>
+      </div>
+    </section>
+
+    <article id="sea">
+      <h2>🌊 바다가 주는 선물</h2>
+      <div class="grid">
+        <div class="item"><div class="emoji">🐟</div><h3>은갈치</h3><p>은빛이 선명하고 살이 부드러워 구이와 조림으로 즐깁니다.</p></div>
+        <div class="item"><div class="emoji">🐚</div><h3>전복·소라</h3><p>해녀가 채취하는 신선한 해산물입니다.</p></div>
+        <div class="item"><div class="emoji">🍣</div><h3>고등어회</h3><p>제주에서 맛볼 수 있는 별미입니다.</p></div>
+      </div>
+
+      <h2 id="pork" style="margin-top:1.5rem">🐷 제주 흑돼지</h2>
+      <p>검은 털의 제주 재래 돼지로 쫄깃하고 고소한 맛이 특징입니다. 근고기와 오겹살 구이가 인기 메뉴입니다.</p>
+
+      <h2 id="food" style="margin-top:1.5rem">🍜 향토 음식</h2>
+      <ul class="recipe">
+        <li><b>고기국수</b> · 진한 돼지 육수에 국수를 말아낸 음식</li>
+        <li><b>갈치조림</b> · 무와 함께 매콤하게 조린 음식</li>
+        <li><b>보말죽</b> · 바다고둥으로 끓인 구수한 죽</li>
+        <li><b>오메기떡</b> · 차조로 만든 쫀득한 떡</li>
+        <li><b>빙떡</b> · 메밀로 만든 담백한 전통 떡</li>
+      </ul>
+    </article>
+
+    <aside id="tip">
+      <h2>📌 한눈에 보기</h2>
+      <p>
+        <span class="badge">감귤</span><span class="badge">한라봉</span><span class="badge">천혜향</span>
+        <span class="badge">은갈치</span><span class="badge">흑돼지</span><span class="badge">전복</span>
+        <span class="badge">녹차</span><span class="badge">오메기떡</span>
+      </p>
+
+      <h2>🧳 여행 팁</h2>
+      <ul>
+        <li>🍊 귤 따기 체험은 겨울철이 좋아요.</li>
+        <li>🍵 녹차밭은 풍경이 아름다운 명소예요.</li>
+        <li>☀️ 날씨가 변덕스러우니 출발 전 예보를 확인하세요.</li>
+        <li>🚗 렌터카는 성수기에 일찍 예약하세요.</li>
+      </ul>
+
+      <h2>🗣️ 제주어 한마디</h2>
+      <p><b>혼저옵서예!</b><br>어서 오세요라는 뜻이에요.</p>
+    </aside>
+
+    <footer>© 2026 현지훈 · 제주 특산물 홍보관 🍊</footer>
   </div>
-
-  <div class="row">
-    <div class="tags"><span class="tag t-tab">탭 (메뉴)</span><span class="tag t-card">카드</span></div>
-    <div class="box">
-      <nav class="card"><a class="active">취향</a><a>음식</a><a>여행</a></nav>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="tags"><span class="tag t-card">카드 (바디)</span><span class="tag t-list">목록</span></div>
-    <div class="box">
-      <main class="card">
-        <h2>🌊 제주대학교 홍보 문구</h2>
-        <h3>🌊 제주대학교를 소개합니다</h3>
-        <ul>
-          <li>🌴 바다와 한라산 사이, 꿈이 자라는 곳 제주대학교</li>
-          <li>🏛️ 제주를 대표하는 국립대학교입니다.</li>
-          <li>🌏 지역에 뿌리를 두고 세계로 뻗어 나갑니다.</li>
-        </ul>
-        <p class="more">… 이하 10개 묶음 · 100줄 (생략)</p>
-      </main>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="tags"><span class="tag t-footer">푸터</span><span class="tag t-card">카드</span></div>
-    <div class="box">
-      <footer class="card">© 2026 현지훈 · 제주 특산물 에이전트</footer>
-    </div>
-  </div>
-
-  <h2 class="res">이름표 찾기 결과</h2>
-  <table>
-    <tr><td>헤더</td><td class="yes">있음 — &lt;header&gt; 1개</td></tr>
-    <tr><td>카드</td><td class="yes">있음 — .card 4개 (헤더·메뉴·바디·푸터)</td></tr>
-    <tr><td>탭</td><td class="yes">있음 — 상단 메뉴 3개 (취향·음식·여행, 누르면 바뀌지는 않음)</td></tr>
-    <tr><td>목록</td><td class="yes">있음 — &lt;ul&gt; 10개, 항목 100줄</td></tr>
-    <tr><td>버튼</td><td class="no">없음</td></tr>
-    <tr><td>입력창</td><td class="no">없음</td></tr>
-  </table>
-</div>
 </body>
 </html>
