@@ -114,12 +114,45 @@
     .chat-bar button { border: 0; background: transparent; color: #fff; font-size: 1.1rem; cursor: pointer; }
     #chatFrame { flex: 1; width: 100%; border: 0; }
 
-    @media (max-width: 720px) {
+    /* ---- 반응형: PC · 태블릿 · 모바일 ---- */
+    body { font-size: clamp(15px, 1.2vw + 12px, 17px); -webkit-text-size-adjust: 100%; }
+    header h1 { font-size: clamp(1.4rem, 4vw + .5rem, 2.2rem); }
+    h2 { font-size: clamp(1.1rem, 1.5vw + .8rem, 1.4rem); }
+    .slider img { height: auto; aspect-ratio: 4 / 3; max-height: 70vh; }
+    .slider { touch-action: pan-y; }
+    nav a, .searchform button, .slnav, #chatBtn { min-height: 44px; }
+    .layout { padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left)); }
+
+    /* 큰 PC 화면: 더 넓게 */
+    @media (min-width: 1200px) {
+      .layout { max-width: 1180px; grid-template-columns: 2.2fr 1fr; gap: 1.25rem; }
+      .grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    /* 태블릿: 사이드를 아래로 내리고 한 줄로 */
+    @media (max-width: 900px) {
       .layout {
         grid-template-columns: 1fr;
         grid-template-areas: "header" "nav" "section" "article" "aside" "footer";
       }
-      nav a { flex: 1 1 45%; }
+    }
+
+    /* 모바일 */
+    @media (max-width: 600px) {
+      .layout { padding: .6rem; gap: .7rem; }
+      header { padding: 1.25rem .75rem; }
+      section, article, aside { padding: 1rem; }
+      /* 메뉴는 한 줄로 두고 옆으로 밀어서 보기, 위에 붙여 두기 */
+      nav { position: sticky; top: 0; z-index: 5; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+      nav::-webkit-scrollbar { display: none; }
+      nav a { flex: 0 0 auto; padding: .8rem 1rem; }
+      .grid { grid-template-columns: 1fr; }
+      .searchform { flex-direction: column; }
+      .slnav { padding: .4rem .7rem; }
+      .thumbs img { width: 56px; height: 42px; }
+      /* 채팅창은 화면 가득 */
+      #chatPanel { inset: 0; width: auto; max-width: none; height: auto; max-height: none; border-radius: 0; }
+      #chatBtn { right: .75rem; bottom: max(.75rem, env(safe-area-inset-bottom)); }
     }
   </style>
 </head>
@@ -298,6 +331,16 @@
 
     $('prev').addEventListener('click', () => { move(-1); startAuto(); });
     $('next').addEventListener('click', () => { move(1); startAuto(); });
+    // 모바일: 이미지를 좌우로 밀어서 넘기기
+    let touchX = null;
+    $('slider').addEventListener('touchstart', e => { touchX = e.touches[0].clientX; }, { passive: true });
+    $('slider').addEventListener('touchend', e => {
+      if (touchX === null) return;
+      const dx = e.changedTouches[0].clientX - touchX;
+      touchX = null;
+      if (Math.abs(dx) > 40) { move(dx < 0 ? 1 : -1); startAuto(); }
+    });
+
     $('form').addEventListener('submit', e => { e.preventDefault(); search($('q').value.trim()); });
     document.addEventListener('keydown', e => {
       if (e.target.tagName === 'INPUT') return;
